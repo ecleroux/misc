@@ -1,0 +1,27 @@
+DECLARE @T TABLE (CId INT, MId INT)
+
+INSERT INTO @T VALUES
+(5, 2),
+(5, 3),
+(5, 4),
+(5, 5),
+(232, 4),
+(232, 23),
+(232, 24),
+(232, 25),
+(13, 23),
+(13, 252),
+(13, 21),
+(54, 21)
+
+
+DECLARE @MGId INT = 200
+
+SELECT G.GId + @MGId, T.*
+FROM @T T
+INNER JOIN (
+				SELECT CId, ROW_NUMBER() OVER(ORDER BY CId) AS GId
+				FROM @T
+				GROUP BY CId
+			) G
+	ON T.CId = G.CId
